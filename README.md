@@ -4,10 +4,10 @@ Proiect individual la disciplina Metode avansate de programare, anul universitar
 
 ## Autor
 
-- **Nume:** [Nume Prenume]
-- **Grupa:** [grupa]
-- **Marca:** [marca]
-- **Tema:** [numarul temei] - [titlul temei]
+- **Nume:** Suceava Sonia Claudia
+- **Grupa:** 2.2
+- **Marca:** LH715712
+- **Tema:** 1 - Agenda de contacte
 
 ## Descriere
 
