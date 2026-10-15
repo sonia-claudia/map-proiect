@@ -73,8 +73,8 @@ inline std::string HomePage() {
 <html lang="ro"><head><meta charset="utf-8"><title>)") + kAppName + R"(</title></head>
 <body>
 <h1>)" + kAppName + R"(</h1>
-<p>Autor: NUME PRENUME, grupa GRUPA</p>
-<p>Tema: NUMARUL TEMEI</p>
+<p>Autor: Suceava Sonia Claudia, grupa 2.2</p>
+<p>Tema: 1 </p>
 <p>Versiune: )" + kAppVersion + ", commit " + Env("APP_COMMIT", "dev") + R"(</p>
 </body></html>)";
 }
