@@ -44,7 +44,7 @@ TEST_CASE("new store starts at one") {
 TEST_CASE("take next id increments") {
     Store store;
 
-    CHECK(store.TakeNextId() == 1);
+    CHECK(store.TakeNextId() == 0); // stricat test intentionat
     CHECK(store.TakeNextId() == 2);
     CHECK(store.NextId() == 3);
 }
