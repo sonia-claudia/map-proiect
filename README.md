@@ -23,7 +23,7 @@ C++20 cu cpp-httplib si nlohmann/json
 
 ```
 docker build -t map-proiect .
-docker run -d -p 8080:8080 map-proiect
+docker run -d -p 8080:8080 --name map map-proiect
 ```
 
 Aplicatia asculta pe portul 8080. Verificati:
@@ -32,6 +32,19 @@ Aplicatia asculta pe portul 8080. Verificati:
 curl http://localhost:8080/health
 curl http://localhost:8080/version
 ```
+
+## Expunere prin Cloudflare Tunnel
+
+Pentru a publica temporar aplicatia printr-un tunel Cloudflare, porniti mai intai
+containerul aplicatiei, apoi rulati:
+
+```
+docker pull ghcr.io/sonia-claudia/map-proiect:latest
+docker run --rm --network host cloudflare/cloudflared:latest tunnel --url http://localhost:8080
+```
+
+Comanda va afisa in terminal adresa publica a tunelului. Pastrati terminalul
+deschis cat timp tunelul trebuie sa ramana activ.
 
 ## Testare
 
