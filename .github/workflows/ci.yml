@@ -14,7 +14,17 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y cmake lcov
       - run: cmake -B build -DBUILD_TESTS=ON -DCMAKE_CXX_FLAGS="--coverage"
       - run: cmake --build build -j && ./build/tests
-      - run: mkdir -p coverage && lcov -c -d build -o coverage/coverage.info
+      - name: Build coverage report for src/ only
+        run: |
+          mkdir -p coverage
+          lcov -c -d build -o coverage/all.info
+          lcov --extract coverage/all.info "$GITHUB_WORKSPACE/src/*" -o coverage/coverage.info
+          lcov --summary coverage/coverage.info | tee coverage/summary.txt
+      - name: Require at least 50% line coverage
+        run: |
+          percent=$(grep -oE 'lines\.*: [0-9.]+' coverage/summary.txt | grep -oE '[0-9.]+$')
+          echo "Line coverage: ${percent}%"
+          awk -v p="$percent" 'BEGIN { exit (p >= 50) ? 0 : 1 }'
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
