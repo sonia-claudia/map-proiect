@@ -11,7 +11,8 @@ RUN cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
 
 # Stage 2 - runtime. A bare Debian plus the statically linked binary.
 FROM debian:bookworm-slim
-LABEL org.opencontainers.image.title="MAP proiect"       org.opencontainers.image.description="Contact book HTTP service (theme 1)"       org.opencontainers.image.licenses="MIT" \
+LABEL org.opencontainers.image.title="MAP proiect" \
+      org.opencontainers.image.description="Contact book HTTP service (theme 1)" \
       org.opencontainers.image.authors="Suceava Sonia Claudia <sonia-claudia.suceava@student.upt.ro>" \
       org.opencontainers.image.source="https://github.com/sonia-claudia/map-proiect"
 
