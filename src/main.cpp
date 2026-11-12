@@ -28,12 +28,52 @@ int main() {
         response.status = 204;
     });
 
+    const auto send = [](httplib::Response& response, const Result& result) {
+        response.status = result.status;
+        if (result.status != 204) {
+            response.set_content(result.body.dump(), "application/json; charset=utf-8");
+        }
+    };
+
+    // The route regex only matches digits; a value too large for int is treated as missing.
+    const auto parse_id = [](const httplib::Request& request) {
+        try {
+            return std::stoi(request.matches[1].str());
+        } catch (...) {
+            return -1;
+        }
+    };
+
+    server.Post("/contacts", [&](const httplib::Request& request, httplib::Response& response) {
+        send(response, store.AddContact(request.body));
+    });
+
+    server.Get("/contacts", [&](const httplib::Request& request, httplib::Response& response) {
+        const std::string category =
+            request.has_param("category") ? request.get_param_value("category") : "";
+        const std::string query = request.has_param("q") ? request.get_param_value("q") : "";
+        send(response, store.ListContacts(category, query));
+    });
+
+    server.Get(R"(/contacts/(\d+))", [&](const httplib::Request& request, httplib::Response& response) {
+        send(response, store.GetContact(parse_id(request)));
+    });
+
+    server.Delete(R"(/contacts/(\d+))", [&](const httplib::Request& request, httplib::Response& response) {
+        send(response, store.DeleteContact(parse_id(request)));
+    });
+
+    server.Get("/stats", [&](const httplib::Request&, httplib::Response& response) {
+        send(response, store.Stats());
+    });
+
     server.Get("/", [](const httplib::Request&, httplib::Response& response) {
         response.set_content(HomePage(), "text/html; charset=utf-8");
     });
 
     server.set_error_handler([](const httplib::Request&, httplib::Response& response) {
-        if (response.status == 404) {
+        // Routes that already produced their own error body keep it.
+        if (response.status == 404 && response.body.empty()) {
             response.set_content(ErrorBody("not_found", "route does not exist").dump(),
                                  "application/json; charset=utf-8");
         }
