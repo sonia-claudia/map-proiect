@@ -40,16 +40,18 @@ curl http://localhost:8080/version
 
 ## Expunere prin Cloudflare Tunnel
 
-Pentru a publica temporar aplicatia printr-un tunel Cloudflare, porniti mai intai
-containerul aplicatiei, apoi rulati:
+Pentru a publica temporar aplicatia printr-un tunel Cloudflare, rulati pe rand:
 
 ```
 docker pull ghcr.io/sonia-claudia/map-proiect:latest
+docker run -d --name map -p 8080:8080 ghcr.io/sonia-claudia/map-proiect:latest
 docker run --rm --network host cloudflare/cloudflared:latest tunnel --url http://localhost:8080
 ```
 
 Comanda va afisa in terminal adresa publica a tunelului. Pastrati terminalul
 deschis cat timp tunelul trebuie sa ramana activ.
+
+Oprire: `Ctrl+C` pentru tunel, apoi `docker stop map && docker rm map`.
 
 ## Testare
 
